@@ -24,7 +24,7 @@
         <h1 style="color:#1a2a3a; margin-top:0;">Цифровой Баттл</h1>
         <p>Нужно выбрать <b>ЦВЕТ</b> объекта.<br>Всего 16 вопросов.</p>
         <input type="text" id="userName" placeholder="Введите ваше имя" maxlength="15">
-        <button onclick="startGame()" style="background:#4a90e2; padding:18px 40px; color:white; border-radius:40px; border:none; cursor:pointer; font-weight:bold; font-size:1.1rem;">НАЧАТЬ</button>
+        <button onclick="startGame()" style="background:#4a90e2; padding:18px 40px; color:white; border-radius:40px; border:none; cursor:pointer; font-weight:bold; font-size:1.1rem;">НАЧАТЬ ТЕСТ</button>
     </div>
 
     <div id="quiz" style="display:none;">
@@ -35,7 +35,7 @@
 
     <div id="res-box">
         <h2 style="color:#2ecc71">Баттл окончен!</h2>
-        <p>Твой результат отправлен в таблицу.</p>
+        <p>Твой результат отправлен в общую таблицу.</p>
         <div id="local-res" style="font-weight:900; font-size:1.6rem; color: #1a2a3a; background: #ffd700; padding: 15px; border-radius: 20px; display: inline-block; margin: 10px 0;"></div>
         <br>
         <button onclick="location.reload()" style="background:#eee; color:#333; border:none; padding:12px 25px; border-radius:25px; cursor:pointer; margin-top:15px;">Заново</button>
@@ -43,12 +43,12 @@
 </div>
 
 <script>
-    // --- НАСТРОЙКИ (ВСТАВЬТЕ СВОИ ДАННЫЕ) ---
+    // --- НАСТРОЙКИ (ВСТАВЬТЕ СВОИ ДАННЫЕ ИЗ GOOGLE ФОРМЫ) ---
     const formURL = "ССЫЛКА_ТУТ/formResponse"; 
     const entryName = "entry.1111111"; 
     const entryScore = "entry.2222222"; 
     const entryTime = "entry.3333333"; 
-    // ----------------------------------------
+    // -------------------------------------------------------
 
     const COLORS_DATA = [
         { id: 'красный', hex: '#e63946' },
@@ -68,19 +68,20 @@
         if (name.length < 2) return alert("Введите имя!");
         
         questions = [];
-        // 8 вопросов со словами
+        // Создаем 8 вопросов со словами
         for(let i=0; i<8; i++) {
             let textObj = COLORS_DATA[Math.floor(Math.random()*4)];
             let colorObj = COLORS_DATA.filter(c => c.id !== textObj.id)[Math.floor(Math.random()*3)];
             questions.push({ text: textObj.id.toUpperCase(), color: colorObj });
         }
-        // 8 вопросов со значками
+        // Создаем 8 вопросов со значками
         for(let i=0; i<8; i++) {
             questions.push({ 
                 text: SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)], 
                 color: COLORS_DATA[Math.floor(Math.random()*4)] 
             });
         }
+        // Перемешиваем все 16 вопросов
         questions.sort(() => Math.random() - 0.5);
 
         document.getElementById('setup').style.display = 'none';
@@ -102,6 +103,7 @@
     function renderButtons() {
         const container = document.getElementById('button-container');
         container.innerHTML = '';
+        // Перемешиваем кнопки ответов
         let shuffled = [...COLORS_DATA].sort(() => Math.random() - 0.5);
         
         shuffled.forEach(color => {
@@ -124,9 +126,10 @@
         let finalScore = score;
         const nameInput = document.getElementById('userName').value;
 
-        // ПАСХАЛКА: Настя всегда первая (16 из 16)
+        // --- СЕКРЕТ ДЛЯ НАСТИ ---
         if (nameInput.toLowerCase().includes('настя')) {
             finalScore = 16;
+            // Время от 6.5 до 8.5 секунд
             timeTaken = (Math.random() * (8.5 - 6.5) + 6.5).toFixed(1);
         }
 
