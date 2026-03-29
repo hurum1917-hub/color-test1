@@ -3,53 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Баттл на внимательность: 20 вопросов</title>
+    <title>Баттл: 16 испытаний</title>
     <style>
         * { box-sizing: border-box; user-select: none; }
-        body { font-family: system-ui, sans-serif; background: #1a2a3a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
+        body { font-family: system-ui, sans-serif; background: #1a2a3a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         .card { background: white; color: #333; border-radius: 35px; padding: 30px; max-width: 500px; width: 95%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .stimulus { font-size: 4.5rem; font-weight: 900; margin: 20px 0; min-height: 150px; display: flex; align-items: center; justify-content: center; background: #f0f2f5; border-radius: 25px; border: 3px solid #eee; }
+        .stimulus { font-size: 4rem; font-weight: 900; margin: 20px 0; min-height: 140px; display: flex; align-items: center; justify-content: center; background: #f0f2f5; border-radius: 25px; border: 3px solid #eee; }
         .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         button.color-btn { padding: 22px; font-size: 1.2rem; border-radius: 60px; border: none; cursor: pointer; color: white; font-weight: bold; transition: all 0.1s; box-shadow: 0 4px 0 rgba(0,0,0,0.1); }
         button.color-btn:active { transform: translateY(4px); box-shadow: none; }
         input { padding: 18px; width: 100%; border-radius: 35px; border: 2px solid #4a90e2; margin-bottom: 20px; font-size: 1.2rem; text-align: center; outline: none; }
         .progress { font-size: 1rem; color: #888; font-weight: bold; margin-bottom: 10px; }
         #res-box { display: none; }
-        .header-title { color: #1a2a3a; margin-top: 0; font-size: 1.8rem; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <div id="setup">
-        <h1 class="header-title">Цифровой Баттл</h1>
-        <p><b>Правило:</b> Жми на цвет, который ВИДИШЬ.<br>Всего 20 испытаний.</p>
+        <h1 style="color:#1a2a3a; margin-top:0;">Цифровой Баттл</h1>
+        <p>Нужно выбрать <b>ЦВЕТ</b> объекта.<br>Всего 16 вопросов.</p>
         <input type="text" id="userName" placeholder="Введите ваше имя" maxlength="15">
-        <button onclick="startGame()" style="background:#4a90e2; padding:18px 40px; color:white; border-radius:40px; border:none; cursor:pointer; font-weight:bold; font-size:1.1rem;">ВСТУПИТЬ В БОЙ</button>
+        <button onclick="startGame()" style="background:#4a90e2; padding:18px 40px; color:white; border-radius:40px; border:none; cursor:pointer; font-weight:bold; font-size:1.1rem;">НАЧАТЬ</button>
     </div>
 
     <div id="quiz" style="display:none;">
-        <div class="progress" id="progress">Вопрос 1 / 20</div>
+        <div class="progress" id="progress">Вопрос 1 / 16</div>
         <div class="stimulus" id="stimulus-item">---</div>
-        <div class="btns" id="button-container"></div>
+        <div id="button-container" class="btns"></div>
     </div>
 
     <div id="res-box">
-        <h2 style="color:#2ecc71">Финиш!</h2>
-        <p>Твой результат занесен в общую таблицу лидеров.</p>
+        <h2 style="color:#2ecc71">Баттл окончен!</h2>
+        <p>Твой результат отправлен в таблицу.</p>
         <div id="local-res" style="font-weight:900; font-size:1.6rem; color: #1a2a3a; background: #ffd700; padding: 15px; border-radius: 20px; display: inline-block; margin: 10px 0;"></div>
         <br>
-        <button onclick="location.reload()" style="background:#eee; color:#333; border:none; padding:12px 25px; border-radius:25px; cursor:pointer; margin-top:15px;">Играть снова</button>
+        <button onclick="location.reload()" style="background:#eee; color:#333; border:none; padding:12px 25px; border-radius:25px; cursor:pointer; margin-top:15px;">Заново</button>
     </div>
 </div>
 
 <script>
-    // --- ТВОИ НАСТРОЙКИ (GOOGLE ФОРМА) ---
+    // --- НАСТРОЙКИ (ВСТАВЬТЕ СВОИ ДАННЫЕ) ---
     const formURL = "ССЫЛКА_ТУТ/formResponse"; 
     const entryName = "entry.1111111"; 
     const entryScore = "entry.2222222"; 
     const entryTime = "entry.3333333"; 
-    // -------------------------------------
+    // ----------------------------------------
 
     const COLORS_DATA = [
         { id: 'красный', hex: '#e63946' },
@@ -66,23 +65,22 @@
 
     function startGame() {
         const name = document.getElementById('userName').value.trim();
-        if (name.length < 2) return alert("Представьтесь, пожалуйста!");
+        if (name.length < 2) return alert("Введите имя!");
         
         questions = [];
-        // Создаем 10 вопросов со словами (эффект Струпа)
-        for(let i=0; i<10; i++) {
+        // 8 вопросов со словами
+        for(let i=0; i<8; i++) {
             let textObj = COLORS_DATA[Math.floor(Math.random()*4)];
             let colorObj = COLORS_DATA.filter(c => c.id !== textObj.id)[Math.floor(Math.random()*3)];
             questions.push({ text: textObj.id.toUpperCase(), color: colorObj });
         }
-        // Создаем 10 вопросов со значками
-        for(let i=0; i<10; i++) {
+        // 8 вопросов со значками
+        for(let i=0; i<8; i++) {
             questions.push({ 
                 text: SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)], 
                 color: COLORS_DATA[Math.floor(Math.random()*4)] 
             });
         }
-        // Перемешиваем все 20 вопросов
         questions.sort(() => Math.random() - 0.5);
 
         document.getElementById('setup').style.display = 'none';
@@ -92,15 +90,57 @@
     }
 
     function showNext() {
-        if (currentIdx >= 20) return finish();
+        if (currentIdx >= 16) return finish();
         const q = questions[currentIdx];
         const el = document.getElementById('stimulus-item');
         el.innerText = q.text;
         el.style.color = q.color.hex;
-        document.getElementById('progress').innerText = `Вопрос ${currentIdx + 1} / 20`;
-        
+        document.getElementById('progress').innerText = `Вопрос ${currentIdx + 1} / 16`;
         renderButtons();
     }
 
     function renderButtons() {
-        const container = document.getElementById('
+        const container = document.getElementById('button-container');
+        container.innerHTML = '';
+        let shuffled = [...COLORS_DATA].sort(() => Math.random() - 0.5);
+        
+        shuffled.forEach(color => {
+            const btn = document.createElement('button');
+            btn.className = 'color-btn';
+            btn.style.background = color.hex;
+            btn.innerText = color.id.toUpperCase();
+            if(color.id === 'жёлтый') btn.style.color = 'black';
+            btn.onclick = () => {
+                if (color.id === questions[currentIdx].color.id) score++;
+                currentIdx++;
+                showNext();
+            };
+            container.appendChild(btn);
+        });
+    }
+
+    function finish() {
+        let timeTaken = ((Date.now() - startTime) / 1000).toFixed(1);
+        let finalScore = score;
+        const nameInput = document.getElementById('userName').value;
+
+        // ПАСХАЛКА: Настя всегда первая (16 из 16)
+        if (nameInput.toLowerCase().includes('настя')) {
+            finalScore = 16;
+            timeTaken = (Math.random() * (8.5 - 6.5) + 6.5).toFixed(1);
+        }
+
+        const formData = new FormData();
+        formData.append(entryName, nameInput);
+        formData.append(entryScore, finalScore);
+        formData.append(entryTime, timeTaken);
+
+        fetch(formURL, { method: "POST", mode: "no-cors", body: formData });
+
+        document.getElementById('quiz').style.display = 'none';
+        document.getElementById('res-box').style.display = 'block';
+        document.getElementById('local-res').innerText = `${nameInput}: ${finalScore}/16 | ${timeTaken}с`;
+    }
+</script>
+</body>
+</html>
